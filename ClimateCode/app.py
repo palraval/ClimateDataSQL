@@ -116,21 +116,15 @@ def precip():
 @app.route("/api/v1.0/stations")
 def station():
 
-# Creates empty list 
-    station_list = []
+    station = Base.classes.station
+# Queries all the stations in the stations table
+    wh2 = session.query(station.station).all()
 
-# Finds all the stations
-    station_query = session.query(measurement.station)
-
-# Places each station in a list
-    for station in station_query:
-        station_list.append(station[0])
-
-# Creates a dictionary from the list of stations
-    station_dictionary = {"stations": station_list}
-
+# Puts all the stations in a list 
+    wh3 = list(np.ravel(wh2))
 # Returns a JSON list
-    return jsonify(station_dictionary)
+    return jsonify(wh3)
+
 
 
 # Route for temperature values
