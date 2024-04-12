@@ -118,12 +118,12 @@ def station():
 
     station = Base.classes.station
 # Queries all the stations in the stations table
-    wh2 = session.query(station.station).all()
+    station_query = session.query(station.station).all()
 
 # Puts all the stations in a list 
-    wh3 = list(np.ravel(wh2))
+    station_list = list(np.ravel(station_query))
 # Returns a JSON list
-    return jsonify(wh3)
+    return jsonify(station_list)
 
 
 
