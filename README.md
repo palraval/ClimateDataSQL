@@ -34,4 +34,4 @@ A Flask API is designed based on the queries previously utilized. 6 routes are m
 6. Start-End Route - Returns a JSON list of minimum temperature, average temperature, and maximum temperature based on temperatures in the dataset that are associated with dates greater than or equal to the specified start date and less than or equal to the specified end date.
 
 
-**Note - The start and end dates inputted in the url must be in the format: YYYY-MM-DD. No other characters should be incorporated**
+**NOTE: The start and end dates inputted in the url must be in the format: YYYY-MM-DD. No other characters should be incorporated**
