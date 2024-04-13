@@ -82,16 +82,16 @@ def precip():
 # Calculates the date one year from the last date in data set.
 
     recent_date = dt.datetime.fromisoformat(recent_date)
-    one_year_date = recent_date - dt.timedelta(days = 365)
+    one_year_date = recent_date - dt.timedelta(days = 366)
 
 # Performs a query to retrieve the date and precipitation scores for year-span
 
-    filter1 =  session.query(measurement.date, measurement.prcp).filter(measurement.date >= one_year_date)
+    year_filter =  session.query(measurement.date, measurement.prcp).filter(measurement.date >= one_year_date).all()
 
 
 # Saves the query results as a Pandas DataFrame
 
-    for value in filter1:
+    for value in year_filter:
         dates.append(value[0])
         precipitation.append(value[1])
 
@@ -175,16 +175,16 @@ def start(start):
 
 # Calculates the minimum, maximum, and average for temperatures associated with dates after the date provided
     date_temperature = session.query(func.min(measurement.tobs), func.max(measurement.tobs), 
-                                    func.avg(measurement.tobs)).filter(measurement.date >= start).all()
+                                    func.avg(measurement.tobs)).filter(measurement.date >= start)
 
 # Stores the minimum, maximum, and average values in the dictionary
     for summary_statistic in date_temperature:
-        TMIN = summary_statistic[0]
-        start_date_temp_values['TMIN'] = TMIN
-        TMAX = summary_statistic[1]
-        start_date_temp_values['TMAX'] = TMAX
-        TMEAN = summary_statistic[2]
-        start_date_temp_values['TMEAN'] = TMEAN
+        tmin = summary_statistic[0]
+        start_date_temp_values['TMIN'] = tmin
+        tmax = summary_statistic[1]
+        start_date_temp_values['TMAX'] = tmax
+        tmean = summary_statistic[2]
+        start_date_temp_values['TMEAN'] = tmean
 
 # Returns a JSON list based on the created dictionary
     return jsonify(start_date_temp_values)
@@ -196,18 +196,18 @@ def start(start):
 def start_end(start, end):
 # Calculates the minimum, maximum, and average for temperatures associated with the range of dates provided 
     start_end_filter = session.query(func.min(measurement.tobs), func.max(measurement.tobs), 
-                        func.avg(measurement.tobs)).filter(measurement.date >= start).filter(measurement.date <= end)
+                                    func.avg(measurement.tobs)).filter(measurement.date <= end)
 
 # Creates empty dictionary
     start_end_temp_values = {}
 # Stores the minimum, maximum, and average values in the dictionary
     for calculation in start_end_filter:
-        TMIN = calculation[0]
-        start_end_temp_values['TMIN'] = TMIN
-        TMAX = calculation[1]
-        start_end_temp_values['TMAX'] = TMAX
-        TMEAN = calculation[2]
-        start_end_temp_values['TMEAN'] = TMEAN
+        tmin= calculation[0]
+        start_end_temp_values['TMIN'] = tmean
+        tmax = calculation[1]
+        start_end_temp_values['TMAX'] = tmax
+        tmean = calculation[2]
+        start_end_temp_values['TMEAN'] = tmean
 # Returns a JSON list for the dictionary
     return jsonify(start_end_temp_values)
 
@@ -217,3 +217,7 @@ def start_end(start, end):
 # Opens the server  
 if __name__  == "__main__":
     app.run(debug = True)
+
+
+# Terminates the session
+session.close()
